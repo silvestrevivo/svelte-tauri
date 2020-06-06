@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import babel from 'rollup-plugin-babel';
 import svelte from 'rollup-plugin-svelte-hot';
+import hmr from 'rollup-plugin-hot';
 
 const production = !process.env.ROLLUP_WATCH;
 const watch = !!process.env.ROLLUP_WATCH
@@ -20,18 +21,15 @@ export default {
 	},
 	plugins: [
 		svelte({
+			// enable HMR (only have effect when dev is also true)
+			hot,
 			// enable run-time checks when not in production
-			hot: true,
-			// dev: !production,
-			dev: hot,
+			dev: !production,
 			// we'll extract any component CSS out into
 			// a separate file - better for performance
-			...(!hot && {
-        css: css => {
-          css.write('public/build/bundle.js')
-        },
-      }),
-
+			css: css => {
+				css.write('public/build/bundle.css')
+			},
 		}),
 
 		// If you have external dependencies installed from
@@ -49,9 +47,13 @@ export default {
 			extensions: ['.js', '.mjs', '.html', '.svelte'],
 			include: ['src/**', 'node_modules/svelte/**'],
 		}),
+
+		// NOTE during dev, we're now gonna serve via rollup-plugin-hot -- it's
+		// easier for simple cases and more stable against Rollup restarts 
+		//
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
-		!production && serve(),
+		// !production && serve(),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
@@ -59,26 +61,36 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser(),
+
+		hmr({
+			enabled: !production,
+			public: 'public',
+			inMemory: true,
+			port: 8000,
+			mount: {
+				public: '/',
+			}
+		})
 	],
 	watch: {
 		clearScreen: false
 	}
 };
 
-function serve() {
-	let started = false;
-
-	return {
-		writeBundle() {
-			if (!started) {
-				started = true;
-
-				require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-					stdio: ['ignore', 'inherit', 'inherit'],
-					shell: true
-				});
-			}
-		}
-	};
-}
+// function serve() {
+// 	let started = false;
+//
+// 	return {
+// 		writeBundle() {
+// 			if (!started) {
+// 				started = true;
+//
+// 				require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+// 					stdio: ['ignore', 'inherit', 'inherit'],
+// 					shell: true
+// 				});
+// 			}
+// 		}
+// 	};
+// }
