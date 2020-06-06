@@ -1,0 +1,36 @@
+{
+  "name": "svelte-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "sirv public --port 8000",
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "test": "echo \"No test specified\" && exit 0",
+    "tauri:prod": "tauri",
+    "tauri:source": "node ../../../../cli/tauri.js/bin/tauri",
+    "tauri:source:init": "yarn tauri:source init --tauriPath ../../../../tauri",
+    "tauri:prod:init": "yarn tauri:prod init",
+    "tauri:source:dev": "yarn tauri:source dev",
+    "tauri:prod:dev": "yarn tauri:prod dev",
+    "tauri:source:build": "yarn tauri:source build",
+    "tauri:prod:build": "yarn tauri:prod build"
+  },
+  "devDependencies": {
+    "@babel/core": "7.10.1",
+    "@babel/preset-env": "7.10.1",
+    "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-node-resolve": "8.0.0",
+    "core-js": "3.6.5",
+    "rollup": "2.11.0",
+    "rollup-plugin-babel": "4.4.0",
+    "rollup-plugin-livereload": "1.3.0",
+    "rollup-plugin-node-resolve": "5.2.0",
+    "rollup-plugin-svelte": "5.2.2",
+    "rollup-plugin-svelte-hot": "^0.8.0",
+    "rollup-plugin-terser": "6.1.0",
+    "svelte": "3.23.0"
+  },
+  "dependencies": {
+    "sirv-cli": "0.4.6"
+  }
+}
