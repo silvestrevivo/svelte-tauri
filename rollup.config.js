@@ -15,7 +15,7 @@ export default {
 	output: {
 		sourcemap: true,
 		format: 'iife',
-		name: 'app',
+		// name: 'app',
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
@@ -28,7 +28,7 @@ export default {
 			// a separate file - better for performance
 			...(!hot && {
         css: css => {
-          css.write('public/build/bundle.js')
+          css.write('public/build/bundle.css')
         },
       }),
 
@@ -45,10 +45,10 @@ export default {
 		}),
 		commonjs(),
 
-		babel({
-			extensions: ['.js', '.mjs', '.html', '.svelte'],
-			include: ['src/**', 'node_modules/svelte/**'],
-		}),
+		// babel({
+		// 	extensions: ['.js', '.mjs', '.html', '.svelte'],
+		// 	include: ['src/**', 'node_modules/svelte/**'],
+		// }),
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),

@@ -2,7 +2,7 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "start": "sirv public --port 8000",
+    "start": "sirv public",
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "test": "echo \"No test specified\" && exit 0",
